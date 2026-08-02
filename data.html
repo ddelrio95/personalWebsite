@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dario Del Rio — Data Consulting</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0D0F12;
+  --panel:#14171C;
+  --fg:#EDEFF2;
+  --muted:#8A929E;
+  --line:rgba(237,239,242,0.10);
+  --lime:#C6F24E;     /* electric lime */
+  --cobalt:#5B7CFF;   /* cobalt */
+  --mono:'JetBrains Mono',monospace;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:var(--bg);color:var(--fg);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:
+    linear-gradient(rgba(237,239,242,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(237,239,242,0.03) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+::selection{background:var(--lime);color:#0D0F12}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;
+  align-items:center;padding:20px 48px;background:rgba(13,15,18,0.8);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line)}
+.logo{font-family:var(--mono);font-weight:600;font-size:0.95rem;letter-spacing:-0.01em;
+  text-decoration:none;color:var(--fg)}
+.logo .blink{color:var(--lime)}
+.nav-links{display:flex;gap:28px;align-items:center;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:0.78rem;text-decoration:none;color:var(--muted);
+  transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--lime)}
+.back{font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--fg)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:140px 48px 80px;
+  position:relative}
+.crumb{font-family:var(--mono);font-size:0.75rem;color:var(--cobalt);margin-bottom:28px;
+  display:flex;gap:8px;align-items:center}
+.crumb .sq{width:8px;height:8px;background:var(--lime)}
+.hero h1{font-size:clamp(2.6rem,7vw,5.6rem);font-weight:600;line-height:1.02;letter-spacing:-0.03em;
+  max-width:16ch;margin-bottom:28px}
+.hero h1 .hl{color:var(--lime)}
+.hero .sub{font-size:clamp(1rem,1.6vw,1.2rem);font-weight:300;color:var(--muted);max-width:560px;
+  line-height:1.7;margin-bottom:44px}
+.cta-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:0.85rem;font-weight:500;text-decoration:none;
+  padding:15px 26px;border-radius:4px;display:inline-flex;align-items:center;gap:10px;transition:.25s}
+.btn.solid{background:var(--lime);color:#0D0F12}
+.btn.solid:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(198,242,78,0.25)}
+.btn.ghost{border:1px solid var(--line);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--lime);color:var(--lime)}
+.stats{position:absolute;bottom:44px;left:48px;display:flex;gap:48px}
+.stat .n{font-family:var(--mono);font-size:1.6rem;font-weight:600;color:var(--fg)}
+.stat .l{font-size:0.72rem;color:var(--muted);letter-spacing:0.04em}
+
+/* SECTION SHELL */
+section.block{padding:110px 48px;border-top:1px solid var(--line)}
+.label{font-family:var(--mono);font-size:0.75rem;color:var(--lime);letter-spacing:0.1em;
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.label::before{content:'//';color:var(--cobalt)}
+.block h2{font-size:clamp(1.8rem,3.4vw,2.8rem);font-weight:600;letter-spacing:-0.02em;
+  line-height:1.1;max-width:20ch;margin-bottom:16px}
+.block .intro{color:var(--muted);font-weight:300;max-width:560px;line-height:1.7}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;margin-top:56px;
+  background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.svc{background:var(--bg);padding:40px;transition:background .3s}
+.svc:hover{background:var(--panel)}
+.svc .idx{font-family:var(--mono);font-size:0.78rem;color:var(--cobalt);margin-bottom:22px}
+.svc h3{font-size:1.35rem;font-weight:600;margin-bottom:12px}
+.svc p{color:var(--muted);font-weight:300;font-size:0.95rem;line-height:1.65}
+.svc .tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.svc .tag{font-family:var(--mono);font-size:0.68rem;color:var(--fg);border:1px solid var(--line);
+  padding:5px 10px;border-radius:3px}
+
+/* WHO */
+.who-wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:20px}
+.who-list{display:flex;flex-direction:column}
+.who-item{padding:22px 0;border-bottom:1px solid var(--line);display:flex;gap:18px}
+.who-item:first-child{border-top:1px solid var(--line)}
+.who-q{color:var(--muted);font-family:var(--mono);font-size:0.8rem;margin-top:2px}
+.who-item h4{font-size:1.02rem;font-weight:500;margin-bottom:5px}
+.who-item p{color:var(--muted);font-weight:300;font-size:0.9rem}
+
+/* HOW */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:56px}
+.step{border-top:2px solid var(--lime);padding-top:20px}
+.step .num{font-family:var(--mono);font-size:0.78rem;color:var(--cobalt);margin-bottom:14px}
+.step h3{font-size:1.1rem;font-weight:600;margin-bottom:8px}
+.step p{color:var(--muted);font-weight:300;font-size:0.88rem;line-height:1.6}
+
+/* CTA */
+.cta{padding:120px 48px;border-top:1px solid var(--line);text-align:center;position:relative}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,
+  rgba(91,124,255,0.10),transparent 60%);pointer-events:none}
+.cta h2{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:600;letter-spacing:-0.02em;margin-bottom:18px;position:relative}
+.cta h2 .hl{color:var(--lime)}
+.cta p{color:var(--muted);font-weight:300;margin-bottom:40px;position:relative}
+.cta .btn{position:relative}
+
+footer{padding:28px 48px;border-top:1px solid var(--line);display:flex;justify-content:space-between;
+  align-items:center;font-family:var(--mono);font-size:0.75rem;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--lime)}
+
+@media(max-width:860px){
+  nav{padding:16px 22px}
+  .nav-links{display:none}
+  .hero{padding:120px 22px 90px}
+  .stats{left:22px;gap:28px}
+  section.block,.cta{padding:70px 22px}
+  .svc-grid,.who-wrap,.steps{grid-template-columns:1fr}
+  .svc{padding:30px}
+  footer{padding:22px;flex-direction:column;gap:10px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">dario<span class="blink">.</span>data</a>
+  <ul class="nav-links">
+    <li><a href="#services" class="active">Services</a></li>
+    <li><a href="#who">Who I help</a></li>
+    <li><a href="#how">Process</a></li>
+    <li><a href="fincrime.html">FinCrime →</a></li>
+  </ul>
+  <a href="index.html" class="back">← home</a>
+</nav>
+
+<section class="hero">
+  <div class="crumb"><span class="sq"></span> DATA_CONSULTING / TAMPA_FL</div>
+  <h1>Your data should be <span class="hl">working</span> for you.</h1>
+  <p class="sub">I help growing businesses turn messy, manual operations into clear, automated, and scalable systems — dashboards, pipelines, integrations, and the automation that gives your team its time back.</p>
+  <div class="cta-row">
+    <a href="mailto:ddelrio.dev@gmail.com" class="btn solid">Book a free 30-min call →</a>
+    <a href="#services" class="btn ghost">See what I build</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">$1M–15M</div><div class="l">client revenue range</div></div>
+    <div class="stat"><div class="n">1–3 wks</div><div class="l">typical delivery</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">person, full picture</div></div>
+  </div>
+</section>
+
+<section class="block" id="services">
+  <p class="label">Services</p>
+  <h2>Three things. One person.</h2>
+  <p class="intro">Most growing businesses don't need a full data team. They need one person who understands data, systems, and operations — and can move fast.</p>
+  <div class="svc-grid">
+    <div class="svc">
+      <div class="idx">01 / INSIGHTS</div>
+      <h3>Data &amp; Insights</h3>
+      <p>Dashboards, automated reports, and analytics so you always know what's happening in your business — without lifting a finger.</p>
+      <div class="tags"><span class="tag">dashboards</span><span class="tag">KPIs</span><span class="tag">reporting</span></div>
+    </div>
+    <div class="svc">
+      <div class="idx">02 / SYSTEMS</div>
+      <h3>Systems &amp; Development</h3>
+      <p>Databases, integrations, data pipelines. Connect your tools so everything works together and nothing falls through the cracks.</p>
+      <div class="tags"><span class="tag">pipelines</span><span class="tag">integrations</span><span class="tag">databases</span></div>
+    </div>
+    <div class="svc">
+      <div class="idx">03 / AUTOMATION</div>
+      <h3>Operations &amp; Automation</h3>
+      <p>Eliminate manual work. If your team does the same thing every week, I automate it so they can focus on what actually matters.</p>
+      <div class="tags"><span class="tag">workflows</span><span class="tag">no-touch reports</span></div>
+    </div>
+    <div class="svc">
+      <div class="idx">04 / ADVISORY</div>
+      <h3>AI &amp; Technology Advisory</h3>
+      <p>Use the right tools for the right problems. I help you navigate technology decisions without the noise and confusion.</p>
+      <div class="tags"><span class="tag">AI</span><span class="tag">tooling</span><span class="tag">strategy</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="who">
+  <p class="label">Who I help</p>
+  <div class="who-wrap">
+    <div>
+      <h2>Businesses that have outgrown their spreadsheets.</h2>
+      <p class="intro">You're doing $1M–$15M in revenue and growing fast. Data is piling up — but nobody's making sense of it, and you can't justify a full data team. That's where I come in.</p>
+    </div>
+    <div class="who-list">
+      <div class="who-item"><span class="who-q">?</span><div><h4>"Why did revenue drop last month?"</h4><p>You're deciding blind. The data exists — it just isn't working for you yet.</p></div></div>
+      <div class="who-item"><span class="who-q">?</span><div><h4>"My team spends hours on manual reports."</h4><p>Repetitive work that should be automated is eating time and budget.</p></div></div>
+      <div class="who-item"><span class="who-q">?</span><div><h4>"Our data is everywhere and nothing connects."</h4><p>QuickBooks, spreadsheets, CRM — no single source of truth.</p></div></div>
+      <div class="who-item"><span class="who-q">?</span><div><h4>"I can't justify a full-time data hire."</h4><p>You don't need one. You need a fractional expert who delivers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <p class="label">Process</p>
+  <h2>How it works.</h2>
+  <div class="steps">
+    <div class="step"><div class="num">01</div><h3>We talk</h3><p>30 minutes. I learn your business and ask the questions that matter. No pitch, no pressure.</p></div>
+    <div class="step"><div class="num">02</div><h3>I scope it</h3><p>Within 24 hours: a one-page proposal. Problem, solution, price, timeline. Clear and simple.</p></div>
+    <div class="step"><div class="num">03</div><h3>I build it</h3><p>Fast delivery. You see progress. Nothing goes live without your approval. Most projects 1–3 weeks.</p></div>
+    <div class="step"><div class="num">04</div><h3>You own it</h3><p>I train your team, document everything, and stay available on a monthly retainer.</p></div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Ready to stop <span class="hl">flying blind?</span></h2>
+  <p>30 minutes. No obligation. Let's talk about your business.</p>
+  <a href="mailto:ddelrio.dev@gmail.com" class="btn solid">ddelrio.dev@gmail.com →</a>
+</section>
+
+<footer>
+  <span>dario.data — Tampa, FL</span>
+  <span><a href="fincrime.html">FinCrime →</a> · <a href="index.html">Home</a></span>
+</footer>
+
+</body>
+</html>
