@@ -124,34 +124,11 @@ nav.scrolled .nav-menu > li > a:hover,nav.scrolled .drop-toggle:hover{color:var(
 .follow a{display:block;font-size:1.15rem;padding:14px 0;border-bottom:1px solid var(--line);transition:.2s}
 .follow a:first-of-type{border-top:1px solid var(--line)}
 .follow a:hover{padding-left:8px;color:var(--muted)}
+.btn-book{display:inline-block;margin-top:14px;padding:17px 30px;background:var(--ink);color:#fff;
+  font-size:0.78rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  border:1px solid var(--ink);transition:.25s}
+.btn-book:hover{background:#fff;color:var(--ink)}
 .contact-note{margin-top:36px;color:var(--muted);font-weight:300;font-size:0.98rem;line-height:1.7;max-width:420px}
-
-/* CALENDAR */
-.cal-head{display:flex;align-items:center;gap:22px;margin-top:52px}
-.cal-arrow{width:38px;height:38px;border:1px solid var(--ink);background:none;color:var(--ink);
-  cursor:pointer;font-size:0.9rem;font-family:inherit;transition:.2s;display:inline-flex;align-items:center;justify-content:center}
-.cal-arrow:hover{background:var(--ink);color:#fff}
-.cal-arrow:disabled{opacity:.25;pointer-events:none}
-.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:26px}
-.cal-day{border:1px solid var(--line);background:none;font-family:inherit;color:var(--ink);
-  padding:14px 0 12px;text-align:center;cursor:pointer;transition:.2s}
-.cal-day .dw{display:block;font-size:0.66rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--label)}
-.cal-day .dn{display:block;font-size:1.2rem;font-weight:500;margin-top:4px}
-.cal-day:hover{border-color:var(--ink)}
-.cal-day.sel{background:var(--ink);border-color:var(--ink)}
-.cal-day.sel .dw,.cal-day.sel .dn{color:#fff}
-.cal-day.off{opacity:.3;pointer-events:none}
-.cal-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:30px;min-height:52px}
-.cal-slot{border:1px solid var(--ink);background:none;font-family:inherit;color:var(--ink);
-  padding:13px 0;text-align:center;font-size:0.88rem;cursor:pointer;transition:.2s}
-.cal-slot:hover{background:var(--ink);color:#fff}
-.cal-empty{color:var(--muted);font-weight:300;font-size:0.95rem;grid-column:1/-1;align-self:center}
-.cal-note{margin-top:26px;font-size:0.78rem;color:var(--label);letter-spacing:0.04em}
-@media(max-width:860px){
-  .cal-days{grid-template-columns:repeat(7,1fr);gap:4px}
-  .cal-day{padding:10px 0 8px}
-  .cal-day .dn{font-size:1rem}
-}
 
 footer{border-top:1px solid var(--line);padding:30px 48px;display:flex;justify-content:space-between;align-items:center;
   font-size:0.74rem;color:var(--label);letter-spacing:0.08em;text-transform:uppercase}
@@ -295,6 +272,7 @@ footer{border-top:1px solid var(--line);padding:30px 48px;display:flex;justify-c
         <span class="label">Phone</span>
         <a class="dv" href="tel:8132206280">(813) 220-6280</a>
       </div>
+      <a class="btn-book" href="https://calendly.com/ddelriodev/introduction-call" target="_blank" rel="noopener">Schedule a Call →</a>
     </div>
     <div>
       <p class="label">Connect</p>
@@ -303,26 +281,6 @@ footer{border-top:1px solid var(--line);padding:30px 48px;display:flex;justify-c
       </div>
       <p class="contact-note">Open to consulting, collaboration, and conversations about data and financial crime technology. The best work starts with a good conversation.</p>
     </div>
-  </div>
-</section>
-
-<!-- SCHEDULE -->
-<section class="section schedule" id="schedule" style="border-top:1px solid var(--line)">
-  <p class="label">Schedule</p>
-  <h2 class="sec-title">Book a Call</h2>
-  <div id="cal">
-    <div class="cal-head">
-      <button class="cal-arrow" id="calPrev" aria-label="Previous week">←</button>
-      <span class="label" id="calRange">Loading…</span>
-      <button class="cal-arrow" id="calNext" aria-label="Next week">→</button>
-    </div>
-    <div class="cal-days" id="calDays"></div>
-    <div class="cal-slots" id="calSlots"><span class="cal-empty">Loading availability…</span></div>
-    <p class="cal-note">All times shown in your local timezone. Booking confirms on Calendly.</p>
-  </div>
-  <div id="calFallback" hidden>
-    <p class="contact-note" style="margin-top:40px">Pick a time that works for you:</p>
-    <a class="svc-more" href="https://calendly.com/ddelriodev/guimar-pro-product-demo" target="_blank" rel="noopener">Open my calendar →</a>
   </div>
 </section>
 
@@ -338,76 +296,6 @@ onScroll();window.addEventListener('scroll',onScroll,{passive:true});
 var drop=document.getElementById('expDrop');
 document.getElementById('dropBtn').addEventListener('click',function(e){e.stopPropagation();drop.classList.toggle('open');});
 document.addEventListener('click',function(){drop.classList.remove('open');});
-
-/* CALENDAR — pulls availability from /api/slots (Calendly-backed) */
-(function(){
-  var $=function(id){return document.getElementById(id);};
-  var cal=$('cal'),fb=$('calFallback'),daysEl=$('calDays'),slotsEl=$('calSlots'),rangeEl=$('calRange');
-  if(!cal)return;
-  var DAY=864e5,weekStart=new Date(),selKey=null,byDay={};
-  var fmtDW=new Intl.DateTimeFormat([],{weekday:'short'});
-  var fmtMD=new Intl.DateTimeFormat([],{month:'short',day:'numeric'});
-  var fmtT=new Intl.DateTimeFormat([],{hour:'numeric',minute:'2-digit'});
-  function dkey(d){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
-
-  function fail(){cal.hidden=true;fb.hidden=false;}
-
-  function renderDays(){
-    daysEl.innerHTML='';
-    var first=null;
-    for(var i=0;i<7;i++){
-      var d=new Date(weekStart.getTime()+i*DAY),k=dkey(d);
-      var has=(byDay[k]||[]).length>0;
-      if(has&&!first)first=k;
-      var b=document.createElement('button');
-      b.className='cal-day'+(has?'':' off');
-      b.dataset.k=k;
-      b.innerHTML='<span class="dw">'+fmtDW.format(d)+'</span><span class="dn">'+d.getDate()+'</span>';
-      b.addEventListener('click',function(){select(this.dataset.k);});
-      daysEl.appendChild(b);
-    }
-    var end=new Date(weekStart.getTime()+6*DAY);
-    rangeEl.textContent=fmtMD.format(weekStart)+' — '+fmtMD.format(end);
-    select(first);
-  }
-
-  function select(k){
-    selKey=k;
-    daysEl.querySelectorAll('.cal-day').forEach(function(b){b.classList.toggle('sel',b.dataset.k===k);});
-    slotsEl.innerHTML='';
-    var slots=k?(byDay[k]||[]):[];
-    if(!slots.length){slotsEl.innerHTML='<span class="cal-empty">No open times this week — try the next one.</span>';return;}
-    slots.forEach(function(s){
-      var b=document.createElement('button');
-      b.className='cal-slot';b.textContent=fmtT.format(new Date(s.start));
-      b.addEventListener('click',function(){window.open(s.url,'_blank','noopener');});
-      slotsEl.appendChild(b);
-    });
-  }
-
-  function load(){
-    slotsEl.innerHTML='<span class="cal-empty">Loading availability…</span>';
-    fetch('/api/slots?start='+encodeURIComponent(weekStart.toISOString()))
-      .then(function(r){if(!r.ok)throw 0;return r.json();})
-      .then(function(j){
-        byDay={};
-        (j.slots||[]).forEach(function(s){
-          var k=dkey(new Date(s.start));
-          (byDay[k]=byDay[k]||[]).push(s);
-        });
-        renderDays();
-      })
-      .catch(fail);
-  }
-
-  $('calPrev').addEventListener('click',function(){
-    var prev=new Date(weekStart.getTime()-7*DAY);
-    if(prev.getTime()<Date.now()-DAY)prev=new Date();
-    weekStart=prev;load();
-  });
-  $('calNext').addEventListener('click',function(){weekStart=new Date(weekStart.getTime()+7*DAY);load();});
-  load();
-})();
 </script>
 
 </body>
