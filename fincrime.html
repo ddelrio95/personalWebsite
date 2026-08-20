@@ -118,7 +118,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:
 
 /* MINIMAL HUD STRIP — no panel, globe shows through */
 .section.bare{padding-top:50px;padding-bottom:50px}
-.hud-row{display:grid;grid-template-columns:repeat(4,1fr);margin-top:10px;
+.hud-row{display:grid;grid-template-columns:repeat(5,1fr);margin-top:10px;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .hud-item{padding:28px 26px 28px 0;border-right:1px solid var(--line)}
 .hud-item:last-child{border-right:0;padding-right:0}
@@ -146,12 +146,14 @@ footer a:hover{color:var(--cyan)}
   .section{padding:60px 22px}
   .panel{padding:30px}
   .two{grid-template-columns:1fr}
-  .hud-row{grid-template-columns:1fr}
-  .hud-item{border-right:0;border-bottom:1px solid var(--line);padding:22px 0}
-  .hud-item:last-child{border-bottom:0}
   .fc-cta{padding:80px 22px 100px}
   footer{padding:22px;flex-direction:column;gap:10px}
   .bg-fx::after{background:radial-gradient(ellipse at 50% 40%,transparent 0%,rgba(3,6,11,0.6) 55%,rgba(3,6,11,0.95) 100%)}
+}
+@media(max-width:1040px){
+  .hud-row{grid-template-columns:1fr}
+  .hud-item{border-right:0;border-bottom:1px solid var(--line);padding:22px 0}
+  .hud-item:last-child{border-bottom:0}
 }
 @media(prefers-reduced-motion:reduce){.status .live{animation:none}}
 </style>
@@ -231,6 +233,7 @@ footer a:hover{color:var(--cyan)}
   <p class="hud-label">Credentials</p>
   <div class="hud-row">
     <div class="hud-item"><span class="k">CAMS</span><span class="v">Certified Anti-Money Laundering Specialist — in progress</span></div>
+    <div class="hud-item"><span class="k">PLTR</span><span class="v">Palantir Foundry Data Engineer — in progress</span></div>
     <div class="hud-item"><span class="k">MRM</span><span class="v">FFIEC &middot; NYDFS Part 504 model governance</span></div>
     <div class="hud-item"><span class="k">OSS</span><span class="v">Open-source AML tooling</span></div>
     <div class="hud-item"><span class="k">WRITE</span><span class="v">The FinCrime Lab</span></div>
