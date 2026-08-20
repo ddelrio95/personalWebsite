@@ -116,6 +116,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:
 .roadmap li:last-child{border-bottom:0}
 .roadmap li .k{color:var(--cyan)}
 
+/* MINIMAL HUD STRIP — no panel, globe shows through */
+.section.bare{padding-top:50px;padding-bottom:50px}
+.hud-row{display:grid;grid-template-columns:repeat(4,1fr);margin-top:10px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.hud-item{padding:28px 26px 28px 0;border-right:1px solid var(--line)}
+.hud-item:last-child{border-right:0;padding-right:0}
+.hud-item .k{display:block;font-family:var(--mono);font-size:0.72rem;color:var(--cyan);
+  letter-spacing:0.14em;margin-bottom:10px}
+.hud-item .v{font-size:0.86rem;color:#93A7BB;line-height:1.55}
+
 /* CTA */
 .fc-cta{padding:110px 48px 130px;text-align:center;position:relative;z-index:2}
 .fc-cta h2{font-size:clamp(2rem,4.5vw,3.6rem);font-weight:700;text-transform:uppercase;
@@ -136,6 +146,9 @@ footer a:hover{color:var(--cyan)}
   .section{padding:60px 22px}
   .panel{padding:30px}
   .two{grid-template-columns:1fr}
+  .hud-row{grid-template-columns:1fr}
+  .hud-item{border-right:0;border-bottom:1px solid var(--line);padding:22px 0}
+  .hud-item:last-child{border-bottom:0}
   .fc-cta{padding:80px 22px 100px}
   footer{padding:22px;flex-direction:column;gap:10px}
   .bg-fx::after{background:radial-gradient(ellipse at 50% 40%,transparent 0%,rgba(3,6,11,0.6) 55%,rgba(3,6,11,0.95) 100%)}
@@ -214,28 +227,13 @@ footer a:hover{color:var(--cyan)}
   </div>
 </section>
 
-<section class="section" id="path">
-  <p class="hud-label">The Path</p>
-  <div class="panel">
-    <h2>What I bring to <span class="g">financial crime tech.</span></h2>
-    <p class="big">Engineering depth and regulatory fluency in one place — backed by proof of work, not just credentials.</p>
-    <div class="two" style="margin-top:34px">
-      <div class="mod" style="background:rgba(0,229,255,0.04)">
-        <div class="tick">// CREDENTIALS</div>
-        <ul class="roadmap">
-          <li><span class="k">CAMS</span> Certified Anti-Money Laundering Specialist — in progress</li>
-          <li><span class="k">MRM</span> FFIEC · NYDFS Part 504 model governance</li>
-        </ul>
-      </div>
-      <div class="mod" style="background:rgba(255,45,149,0.04)">
-        <div class="tick">// PROOF OF WORK</div>
-        <ul class="roadmap">
-          <li><span class="k">WRITE</span> Publishing on AML data & technology</li>
-          <li><span class="k">SPEAK</span> Talks on financial crime tech</li>
-          <li><span class="k">OSS</span> Open-source AML tooling</li>
-        </ul>
-      </div>
-    </div>
+<section class="section bare" id="path">
+  <p class="hud-label">Credentials</p>
+  <div class="hud-row">
+    <div class="hud-item"><span class="k">CAMS</span><span class="v">Certified Anti-Money Laundering Specialist — in progress</span></div>
+    <div class="hud-item"><span class="k">MRM</span><span class="v">FFIEC &middot; NYDFS Part 504 model governance</span></div>
+    <div class="hud-item"><span class="k">OSS</span><span class="v">Open-source AML tooling</span></div>
+    <div class="hud-item"><span class="k">WRITE</span><span class="v">The FinCrime Lab</span></div>
   </div>
 </section>
 
